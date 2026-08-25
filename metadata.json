@@ -1,0 +1,6 @@
+{
+  "name": "Nexora Enterprise AI Workspace",
+  "description": "One Intelligent Workspace for Enterprise Knowledge, AI Collaboration, and Automation.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

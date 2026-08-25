@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/* Scrollbar customizations */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* Animations and glassmorphism helpers */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.animate-cursor {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.dark .shimmer-bg {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Custom shadow/glow details */
+.premium-glow-emerald {
+  box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.15);
+}
+
+.premium-glow-blue {
+  box-shadow: 0 0 20px -3px rgba(59, 130, 246, 0.15);
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 18, 28, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Glassmorphism Premium Input */
+.glass-input {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.dark .glass-input {
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Premium shadows */
+.premium-shadow {
+  box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.08), 0 8px 16px -6px rgba(124, 58, 237, 0.04);
+}
+
+.dark .premium-shadow {
+  box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.5), 0 4px 12px -5px rgba(124, 58, 237, 0.1);
+}
+
+/* Gemini/Copilot style gradient animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gemini-gradient {
+  background: linear-gradient(-45deg, #4f46e5, #7c3aed, #06b6d4, #db2777);
+  background-size: 400% 400%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+.gemini-gradient-text {
+  background: linear-gradient(135deg, #4f46e5 10%, #7c3aed 40%, #06b6d4 70%, #db2777 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom rounded corners: 20px spec */
+.rounded-20 {
+  border-radius: 20px;
+}
+
+/* Accent border-radius nested rules */
+/* Nested corner radius: R_inner = R_outer - Padding */
+/* For external card radius 16px and padding 16px (1rem), inner is 0 (or flat) */
+/* For external card radius 24px and padding 16px, inner is 8px */

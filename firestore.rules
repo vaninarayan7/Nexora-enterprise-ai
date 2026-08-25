@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Users (Allow all signed in users to read/write for query support)
+    match /users/{userId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Organizations (Restricted to owner or members)
+    match /organizations/{organizationId} {
+      allow read, write: if isSignedIn() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin" ||
+        resource == null || 
+        resource.data.ownerUid == request.auth.uid || 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.organizationId == organizationId
+      );
+    }
+
+    // Invitations
+    match /invitations/{invId} {
+      allow get: if true;
+      allow list: if isSignedIn();
+      allow create, delete: if isSignedIn() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Organizer" ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin"
+      );
+      allow update: if isSignedIn() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Organizer" ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin" ||
+        (request.resource.data.status == "accepted")
+      );
+    }
+
+    // Admin Requests
+    match /admin_requests/{requestId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Knowledge Documents
+    match /documents/{docId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Chat Sessions
+    match /conversations/{convId} {
+      allow read, write: if isSignedIn();
+      match /messages/{msgId} {
+        allow read, write: if isSignedIn();
+      }
+    }
+
+    // Kanban Tasks
+    match /tasks/{taskId} {
+      allow read, write: if isSignedIn();
+      match /comments/{commentId} {
+        allow read, write: if isSignedIn();
+      }
+      match /attachments/{attachId} {
+        allow read, write: if isSignedIn();
+      }
+    }
+
+    // Meetings
+    match /meetings/{meetId} {
+      allow read, write: if isSignedIn();
+      match /transcripts/{segId} {
+        allow read, write: if isSignedIn();
+      }
+    }
+
+    // Emails
+    match /emails/{emailId} {
+      allow read, write: if isSignedIn();
+    }
+    match /drafts/{draftId} {
+      allow read, write: if isSignedIn();
+    }
+    match /sentEmails/{sentId} {
+      allow read, write: if isSignedIn();
+    }
+    match /email_templates/{templateId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Notifications
+    match /notifications/{notifId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Audit logs
+    match /audit_logs/{logId} {
+      allow read, create: if isSignedIn();
+      allow update, delete: if false;
+    }
+  }
+}

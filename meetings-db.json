@@ -1,0 +1,83 @@
+[
+  {
+    "id": "aet-zlk-pah",
+    "title": "vani",
+    "organizer": "Nexora Host",
+    "ownerId": "anonymous-host",
+    "platform": "Nexora",
+    "time": "12:58 (2026-07-30)",
+    "duration": "30 mins",
+    "participants": [
+      "Nexora Host"
+    ],
+    "participantIds": [
+      "anonymous-host"
+    ],
+    "invitedEmails": [],
+    "project": "Nexora Virtual Network",
+    "status": "upcoming",
+    "tags": [
+      "Secure-WebRTC",
+      "Nexora-Native",
+      "No-Email"
+    ],
+    "password": "ruk",
+    "waitingRoomEnabled": true,
+    "locked": false,
+    "date": "2026-07-30"
+  },
+  {
+    "id": "aet-tbx-mrf",
+    "title": "vani",
+    "organizer": "Vani Valmiki",
+    "ownerId": "cTXTHS2YiqhASnIS1ssYMMo1U2s1",
+    "platform": "Nexora",
+    "time": "14:04 (2026-08-26)",
+    "duration": "30 mins",
+    "participants": [
+      "Vani Valmiki"
+    ],
+    "participantIds": [
+      "cTXTHS2YiqhASnIS1ssYMMo1U2s1"
+    ],
+    "invitedEmails": [],
+    "project": "Nexora Virtual Network",
+    "status": "upcoming",
+    "tags": [
+      "Secure-WebRTC",
+      "Nexora-Native",
+      "No-Email"
+    ],
+    "password": "pc5vev",
+    "waitingRoomEnabled": true,
+    "locked": false,
+    "date": "2026-08-26"
+  },
+  {
+    "id": "aet-unq-mlx",
+    "title": "ncc",
+    "organizer": "Vani Valmiki",
+    "ownerId": "cTXTHS2YiqhASnIS1ssYMMo1U2s1",
+    "platform": "Nexora",
+    "time": "16:57 (2026-09-23)",
+    "duration": "30 mins",
+    "participants": [
+      "Vani Valmiki"
+    ],
+    "participantIds": [
+      "cTXTHS2YiqhASnIS1ssYMMo1U2s1"
+    ],
+    "invitedEmails": [],
+    "project": "Nexora Virtual Network",
+    "status": "upcoming",
+    "tags": [
+      "Secure-WebRTC",
+      "Nexora-Native",
+      "No-Email"
+    ],
+    "password": "pzqwaq",
+    "waitingRoomEnabled": true,
+    "locked": false,
+    "date": "2026-09-23"
+  }
+]

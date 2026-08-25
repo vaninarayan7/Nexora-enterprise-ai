@@ -1,0 +1,1 @@
+import handler from './api/email/send'; const req = { method: 'POST', body: { recipient: 'test@example.com', subject: 'Test', body: 'Test', token: 'fake' } }; const res = { status: (c) => { console.log('Status', c); return res; }, json: (d) => console.log('Response', JSON.stringify(d)) }; handler(req, res).catch(console.error);

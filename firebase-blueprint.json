@@ -1,0 +1,239 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile containing identity and role information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique identifier of the user." },
+        "email": { "type": "string", "description": "Email address of the user." },
+        "displayName": { "type": "string", "description": "Display name of the user." },
+        "role": { "type": "string", "enum": ["Admin", "Manager", "Employee"], "description": "The RBAC role assigned to the user." },
+        "photoURL": { "type": "string", "description": "Avatar photo URL." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "KnowledgeDoc": {
+      "title": "KnowledgeDoc",
+      "description": "Enterprise document used for semantic search and RAG operations.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique document identifier." },
+        "name": { "type": "string", "description": "The name of the file." },
+        "type": { "type": "string", "description": "File format type (pdf, docx, txt, etc)." },
+        "size": { "type": "string", "description": "Human-readable file size." },
+        "content": { "type": "string", "description": "Extracted raw textual content." },
+        "summary": { "type": "string", "description": "AI-generated executive summary." },
+        "uploadedBy": { "type": "string", "description": "UID of the uploader." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "content"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "A single conversational chat thread session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique session ID." },
+        "title": { "type": "string", "description": "Conversational title." },
+        "userId": { "type": "string", "description": "Owner UID." },
+        "personaId": { "type": "string", "description": "The active AI persona ID." },
+        "modelName": { "type": "string", "description": "Active AI Model name." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "userId"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "An individual message within a conversation chat history.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique message ID." },
+        "conversationId": { "type": "string", "description": "Reference conversation ID." },
+        "role": { "type": "string", "enum": ["user", "assistant"] },
+        "content": { "type": "string", "description": "Message content." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "conversationId", "role", "content"]
+    },
+    "KanbanTask": {
+      "title": "KanbanTask",
+      "description": "A collaborative task card on the Kanban Board.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["todo", "in_progress", "in_review", "done"] },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "assigneeId": { "type": "string" },
+        "assigneeName": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "status", "priority"]
+    },
+    "TaskComment": {
+      "title": "TaskComment",
+      "description": "A user-submitted comment on a Kanban task.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "taskId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "taskId", "userId", "text"]
+    },
+    "TaskAttachment": {
+      "title": "TaskAttachment",
+      "description": "An attached file on a Kanban task.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "taskId": { "type": "string" },
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "uploadedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "taskId", "name", "url"]
+    },
+    "Meeting": {
+      "title": "Meeting",
+      "description": "A scheduled or historical meeting record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "organizer": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "time": { "type": "string" },
+        "duration": { "type": "string" },
+        "participants": { "type": "array" },
+        "status": { "type": "string", "enum": ["upcoming", "live", "completed"] },
+        "summary": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "organizer", "status"]
+    },
+    "MeetingTranscript": {
+      "title": "MeetingTranscript",
+      "description": "Speech-to-text transcript segments for meetings.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "meetingId": { "type": "string" },
+        "speaker": { "type": "string" },
+        "text": { "type": "string" },
+        "time": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "meetingId", "speaker", "text"]
+    },
+    "EmailRecord": {
+      "title": "EmailRecord",
+      "description": "A logged dispatch event for automated emails.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "recipient": { "type": "string" },
+        "subject": { "type": "string" },
+        "body": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["success", "failed", "pending"] },
+        "type": { "type": "string", "enum": ["summary", "alert", "report"] },
+        "error": { "type": "string" },
+        "userId": { "type": "string" }
+      },
+      "required": ["id", "recipient", "subject", "body", "status"]
+    },
+    "SmartNotification": {
+      "title": "SmartNotification",
+      "description": "An alert notification for task reminders or system alerts.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["success", "info", "alert"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["id", "title", "message", "type", "isRead"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "An immutable security log of actions taken within the workspace.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Collection of user security profiles and roles."
+    },
+    "/documents/{docId}": {
+      "schema": "KnowledgeDoc",
+      "description": "Indexed documents for vector lookup and RAG."
+    },
+    "/conversations/{convId}": {
+      "schema": "Conversation",
+      "description": "User chat sessions."
+    },
+    "/conversations/{convId}/messages/{msgId}": {
+      "schema": "ChatMessage",
+      "description": "Individual messages inside a conversation."
+    },
+    "/tasks/{taskId}": {
+      "schema": "KanbanTask",
+      "description": "Workspace project task cards."
+    },
+    "/tasks/{taskId}/comments/{commentId}": {
+      "schema": "TaskComment",
+      "description": "Comments attached to Kanban cards."
+    },
+    "/tasks/{taskId}/attachments/{attachId}": {
+      "schema": "TaskAttachment",
+      "description": "Media/file attachments bound to Kanban cards."
+    },
+    "/meetings/{meetId}": {
+      "schema": "Meeting",
+      "description": "Workspace meeting sessions."
+    },
+    "/meetings/{meetId}/transcripts/{segId}": {
+      "schema": "MeetingTranscript",
+      "description": "Segments of speech-to-text live meeting minutes."
+    },
+    "/emails/{emailId}": {
+      "schema": "EmailRecord",
+      "description": "Sent email automation history logs."
+    },
+    "/notifications/{notifId}": {
+      "schema": "SmartNotification",
+      "description": "User dashboard notifications and push alerts."
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Immutable workspace system audit records."
+    }
+  }
+}
