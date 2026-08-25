@@ -114,10 +114,9 @@ export default function SuperAdminDashboard({ currentUser, triggerToast }: Super
 
   const handleDeleteOrg = async (orgId: string, orgName: string) => {
     try {
-      const { doc, deleteDoc } = await import("firebase/firestore");
-      const { db } = await import("../../lib/firebaseDb");
-      await deleteDoc(doc(db, "organizations", orgId));
-      triggerToast(`Deleted organization ${orgName}.`, "info");
+      const { permanentlyDeleteOrganization } = await import("../../lib/firebaseDb");
+      await permanentlyDeleteOrganization(orgId);
+      triggerToast(`Deleted organization ${orgName} and all associated data.`, "info");
       loadOrganizations();
     } catch (e) {
       triggerToast("Failed to delete organization", "error");

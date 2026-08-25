@@ -137,6 +137,10 @@ export const processPendingInvitation = async (user: User, pendingToken: string)
     displayName: user.displayName || user.email?.split("@")[0] || "Enterprise Member"
   };
   
+  if ((profile as any).organizationId && (profile as any).organizationId !== org.organizationId) {
+    throw new Error("You are already a member of another organization. One email can only belong to one organization.");
+  }
+  
   (profile as any).role = inviteRole;
   (profile as any).organizationId = org.organizationId;
   (profile as any).organizationName = org.organizationName;
@@ -245,16 +249,7 @@ export const initAuth = (
             }
           }
 
-          // Repair logic: if they own an organization but were mapped to Employee, restore Organizer role
-          if (profile.role === "Employee" && (profile as any).organizationOwner === true) {
-            profile.role = "Organizer";
-            try {
-              await saveUserProfile(profile);
-              console.log(`[initAuth] Repaired user profile role for ${user.uid} -> Organizer`);
-            } catch (repairErr) {
-              console.error(`[initAuth] Failed to repair user profile role:`, repairErr);
-            }
-          }
+          // Removed aggressive Employee -> Organizer repair logic to preserve correct role assignment.
         }
 
         if (profile && profile.organizationId) {
@@ -990,6 +985,9 @@ export const googleSignInAndSetup = async (setupData: string | { orgInput: strin
     // If an existing user explicitly requested to be an Organizer and they aren't one yet,
     // let the flow fall through to create the organization for them instead of returning early.
     if (role === "Organizer" && profile.role !== "Organizer") {
+      if (profile.organizationId) {
+        throw new Error("This email is already associated with an organization. One email can only belong to one organization.");
+      }
       console.log(`[AuthFlow] Upgrading existing user ${user.uid} to Organizer. Proceeding to org creation...`);
       profile.role = "Organizer";
       // Fall through...

@@ -12,18 +12,30 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Users (Allow all signed in users to read/write for query support)
+    // Users (Allow all signed in users to read for query support, but restrict updates)
     match /users/{userId} {
-      allow read, write: if isSignedIn();
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin" ||
+        (request.resource.data.organizationId == resource.data.organizationId) ||
+        (resource.data.organizationId == null) ||
+        (request.resource.data.organizationId == null)
+      );
+      allow delete: if isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin";
     }
 
     // Organizations (Restricted to owner or members)
     match /organizations/{organizationId} {
-      allow read, write: if isSignedIn() && (
+      allow read, create, update: if isSignedIn() && (
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin" ||
         resource == null || 
         resource.data.ownerUid == request.auth.uid || 
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.organizationId == organizationId
+      );
+      allow delete: if isSignedIn() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Super Admin" ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Admin"
       );
     }
 

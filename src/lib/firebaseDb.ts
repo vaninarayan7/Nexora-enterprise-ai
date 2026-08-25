@@ -1015,5 +1015,41 @@ export async function getAuditLogs(organizationId: string): Promise<DbAuditLog[]
     return snap.docs.map(d => d.data() as DbAuditLog);
   } catch (err) {
     handleFirestoreError(err, OperationType.LIST, path);
+    return [];
   }
 }
+
+// ----------------------------------------------------------------------
+// 9. Super Admin Organization Management
+// ----------------------------------------------------------------------
+
+export async function permanentlyDeleteOrganization(orgId: string): Promise<void> {
+  console.log(`[FirestoreData] Initiating permanent deletion of organization: ${orgId}`);
+  
+  const collectionsToWipe = [
+    "users", "documents", "tasks", "meetings", 
+    "conversations", "emails", "audit_logs", "invitations"
+  ];
+
+  for (const collName of collectionsToWipe) {
+    try {
+      const q = query(collection(db, collName), where("organizationId", "==", orgId));
+      const snap = await getDocs(q);
+      const deletePromises = snap.docs.map(d => deleteDoc(doc(db, collName, d.id)));
+      await Promise.all(deletePromises);
+      console.log(`[FirestoreData] Wiped ${snap.size} documents from ${collName}`);
+    } catch (e) {
+      console.error(`[FirestoreData] Failed wiping collection ${collName}:`, e);
+    }
+  }
+
+  // Finally delete the organization itself
+  try {
+    await deleteDoc(doc(db, "organizations", orgId));
+    console.log(`[FirestoreData] Successfully deleted organization document: ${orgId}`);
+  } catch (e) {
+    console.error(`[FirestoreData] Failed deleting organization document:`, e);
+    throw e;
+  }
+}
+
