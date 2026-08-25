@@ -503,7 +503,7 @@ export default function OrganizerDashboard({ currentUser, triggerToast }: Organi
                     )}
                   </td>
                   <td className="py-4 px-4">
-                    {(m.uid !== currentUser?.uid && (m.role === "Manager" || m.role === "Employee")) && (
+                    {(m.uid !== currentUser?.uid) && (
                       <div className="flex items-center gap-2">
                         {m.status !== "SUSPENDED" ? (
                           <button
